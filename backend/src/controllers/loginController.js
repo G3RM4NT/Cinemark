@@ -10,7 +10,7 @@ const loginController = {};
 
 loginController.login = async (req, res) => {
   //Pedimos las cosas
-  const { email, password } = req.body;
+  const { correo, contrasenia } = req.body;
 
   try {
     //Validamos los 3 posibles niveles
@@ -21,18 +21,18 @@ loginController.login = async (req, res) => {
 
     //1. Admin
     if (
-      email === config.ADMIN.emailAdmin &&
-      password === config.ADMIN.password
+      correo === config.ADMIN.correoAdmin &&
+      contrasenia === config.ADMIN.contrasenia
     ) {
       userType = "admin";
       userFound = { _id: "admin" };
     } else {
       //2. Empleados
-      userFound = await employeesModel.findOne({ email });
+      userFound = await employeesModel.findOne({ correo });
       userType = "employee";
       if (!userFound) {
         //3. Cliente
-        userFound = await customersModel.findOne({ email });
+        userFound = await customersModel.findOne({ correo });
         userType = "customer";
       }
     }
@@ -45,9 +45,9 @@ loginController.login = async (req, res) => {
     // Validar la contraseña
     // SOLO SI NO ES ADMIN
     if (userType !== "admin") {
-      const isMatch = await bcryptjs.compare(password, userFound.password);
+      const isMatch = await bcryptjs.compare(contrasenia, userFound.contrasenia);
       if (!isMatch) {
-        return res.json({ message: "Invalid password" });
+        return res.json({ message: "Invalid contrasenia" });
       }
     }
 

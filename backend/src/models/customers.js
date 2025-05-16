@@ -14,12 +14,13 @@ const customersSchema = new Schema(
 
     correo: {
       type: String,
+      require: true,
     },
 
     contrasenia: {
-      type: Date,
+      type: String,
       require: true,
-      min: 0,
+      
     },
 
     telefono: {

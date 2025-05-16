@@ -23,13 +23,13 @@ registerEmployeeController.register = async(req, res)=> {
 
     try {
         // 1- Verificamos si el empleado ya existe
-        const existEmployee = await employeeModel.findOne({email})
+        const existEmployee = await employeeModel.findOne({correo})
         if(existEmployee) {
             return res.json({message: "Employee already exist"})
         } 
 
         // 2- Encriptar la contraseña
-        const passwordHash = await bcryptjs.hash(password, 10)
+        const passwordHash = await bcryptjs.hash(contrasenia, 10)
 
         //3- Guardar todo en la tabla Empleados
         const newEmployee = new employeeModel({nombre,

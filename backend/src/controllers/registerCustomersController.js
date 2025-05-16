@@ -24,13 +24,13 @@ registerClientController.registerClient = async (req, res) => {
 
   try {
     // Varificar si el cliente ya existe
-    const existClient = await clientsModel.findOne({ email });
+    const existClient = await clientsModel.findOne({ correo });
     if (existClient) {
       return res.json({ message: "Client already exists" });
     }
 
     // Encriptar la contraseña
-    const passwordHash = await bcryptjs.hash(password, 10);
+    const passwordHash = await bcryptjs.hash(contrasenia, 10);
 
     // Guardamos en la base de datos
     const newClient = new clientsModel({
@@ -53,7 +53,7 @@ registerClientController.registerClient = async (req, res) => {
     const tokenCode = jsonwebtoken.sign(
       {
         //1- ¿que vamos a guardar?
-        email,
+        correo,
         verficationCode,
         expiresAt,
       },
@@ -118,7 +118,7 @@ registerClientController.verifyCodeEmail = async (req, res) => {
     // Para obtener el email y el codigo de verificacion
     // Que acabamos de guardar al momento de registrar
     const decoded = jsonwebtoken.verify(token, config.JWT.secret);
-    const { email, verficationCode: storedCode } = decoded;
+    const { correo, verficationCode: storedCode } = decoded;
 
     // Comparar el codigo recibido con el almacenado en el token
     if (verficationCode !== storedCode) {
@@ -126,7 +126,7 @@ registerClientController.verifyCodeEmail = async (req, res) => {
     }
 
     // busco al cliente
-    const client = await clientsModel.findOne({ email });
+    const client = await clientsModel.findOne({ correo   });
     if (!client) {
       return res.json({ message: "Client not found" });
     }

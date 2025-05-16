@@ -1,6 +1,16 @@
 //Array de metodos (C R U D)
 const moviesController = {};
 import moviesModel from "../models/movies.js";
+import { v2 as cloudinary } from "cloudinary";
+
+import { config } from "../config.js";
+
+
+cloudinary.config({
+  cloud_name: config.cloudinary.cloudinary_name,
+  api_key: config.cloudinary.cloudinary_api_key,
+  api_secret: config.cloudinary.cloudinary_api_secret,
+});
 
 // SELECT
 moviesController.getmovies = async (req, res) => {
@@ -10,9 +20,22 @@ moviesController.getmovies = async (req, res) => {
 
 // INSERT
 moviesController.createmovies = async (req, res) => {
-  const { titulo, descripcion, director, genero, anio, duracion, image  } = req.body;
-  const newmovies = new moviesModel({ titulo, descripcion, director, genero, anio, duracion, image});
+  const { titulo, descripcion, director, genero, anio, duracion} = req.body;
+
+  let imageURL = "";
+
+  if (req.file) {
+    const result = await cloudinary.uploader.upload(req.file.path, {
+      folder: "public",
+      allowed_formats: ["png", "jpg", "jpeg"],
+    });
+    //Guardo en la variable la URL de donde se subió la imagen
+    imageURL = result.secure_url;
+     
+  }
+   const newmovies = new moviesModel({ titulo, descripcion, director, genero, anio, duracion, image: imageURL});
   await newmovies.save();
+  
   res.json({ message: "movie saved" });
 };
 
