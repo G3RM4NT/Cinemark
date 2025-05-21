@@ -24,7 +24,7 @@ customersController.createcustomers = async (req, res) => {
     direccion,
     DUI});
   await newcustomers.save();
-  res.json({ message: "employee saved" });
+  res.json({ message: "customers saved" });
 };
 
 // DELETE

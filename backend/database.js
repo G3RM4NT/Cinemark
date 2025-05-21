@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 // 1- Configuro la URI o dirección de la base de datos
-const URI = "mongodb+srv://German:GermanDanielImanol@clustera2.lgxpo.mongodb.net/?retryWrites=true&w=majority&appName=ClusterA2";
+const URI = "mongodb+srv://German:GermanDanielImanol@clustera2.lgxpo.mongodb.net/Cinemark?retryWrites=true&w=majority&appName=ClusterA2";
 
 // 2- Conecto la base de datos
 mongoose.connect(URI);

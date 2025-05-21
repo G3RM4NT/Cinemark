@@ -49,9 +49,10 @@ const employeesSchema = new Schema(
         require: true,
       },
 
-      DUI: {
+      dui: {
         type: String,
         require: true,
+        unique: true,
       },
      
   },
